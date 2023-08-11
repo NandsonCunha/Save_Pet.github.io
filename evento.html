@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Eventos</title>
+    <link rel="stylesheet" type="text/css" href="e_style.css">
+    <link rel="icon" type="image/png" href="mdi_cat.png">
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a class="logo" href="#"><img class="logo" src="Adote Aqui!.png" alt="Logo"></a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Adotar</a></li>
+            <li><a href="foruns.html">Fórum</a></li>
+            <li><a href="cadastro_gato.html">Colocar para Adoção</a></li>
+            <li><a href="perdido.html">Perdidos</a></li>
+            <li><a href="add_perdido.html">Cadastrar Animal Perdido</a></li>
+            <li class="search-bar">
+                <input class="search-barra" type="text" placeholder="Pesquisar">
+                <a class="icon-pesquisar-a" href=""><img class="icon-pesquisar" src="magnifying-glass-solid.svg" alt=""></a>
+            </li>
+            
+            <li class="login-icon">
+                <a href="javascript:void(0);" onclick="verificarUsuarioLogado();">
+                    <img class="perfil" src="user-solid.svg" alt="perfil">
+                    <span id="nomeUsuarioDisplay"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="image-section" id="eventoConteiner">
+
+    </div>
+    
+    <script>        
+               const eventoConteiner = document.getElementById("eventoConteiner");
+        const eventosCadastrados = JSON.parse(localStorage.getItem("eventosCadastrados")) || [];
+    
+        eventosCadastrados.forEach(evento => {
+            const eventoItem = document.createElement("div");
+            eventoItem.classList.add("image-item");
+            eventoItem.innerHTML = `
+                <a href="cadastroEvent.html?id=${evento.id}">
+                    <img src="data:image/png;base64,${evento.foto}" alt="Imagem do Evento">
+                </a>
+                <h3>
+                    Nome: ${evento.nome}<br>
+                    Data do Evento: ${evento.dataEvento}<br>
+                    Endereco: ${evento.endereco}<br>
+                </h3>
+            `;
+            eventoConteiner.appendChild(eventoItem);
+        });
+        
+
+
+
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+        function verificarUsuarioLogado() {
+            if (usuarioLogado) {
+                window.location.href = "perfil_usuario.html";
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+
+
+
+
+
+        // Atualiza o nome do usuário na barra de navegação
+        if (usuarioLogado) {
+            const nomeUsuarioDisplay = document.getElementById("nomeUsuarioDisplay");
+            nomeUsuarioDisplay.textContent = `Olá, ${usuarioLogado.nome}!`;
+        }
+
+        function deslogar() {
+            localStorage.removeItem("usuarioLogado");
+            alert("Você foi deslogado com sucesso.");
+            location.reload(); // Recarrega a página para atualizar o menu
+        }
+        </script>
+    
+    
+</body>
+</html>

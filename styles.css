@@ -239,3 +239,37 @@ body {
     color: #888;
     font-size: 12px;
 }
+
+.carousel-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide img {
+    width: 90%;
+    height: 350px;
+    margin: 0 5%;
+}
+
+
+.prev-button,
+.next-button {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 70px;
+}
+
+.prev-button:hover,
+.next-button:hover {
+    background-color: #2980b9;
+}
