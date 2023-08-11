@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat do Fórum</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" type="image/png" href="mdi_cat.png">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a class="logo" href="#"><img class="logo" src="Adote Aqui!.png" alt="Logo"></a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Adotar</a></li>
+            <li><a href="foruns.html">Fórum</a></li>
+            <li><a href="cadastro_gato.html">Colocar para Adoção</a></li>
+            <li><a href="perdido.html">Perdidos</a></li>
+            <li><a href="add_perdido.html">Cadastrar Animal Perdido</a></li>
+           
+            
+            <li class="login-icon">
+                <a href="javascript:void(0);" onclick="verificarUsuarioLogado();">
+                    <img class="perfil" src="user-solid.svg" alt="perfil">
+                    <span id="nomeUsuarioDisplay"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="chat-container">
+        <!-- As mensagens do chat serão exibidas aqui -->
+    </div>
+    <div class="mensagem-input">
+        <input type="text" id="novaMensagem" placeholder="Digite sua mensagem...">
+        <button onclick="enviarMensagem()">Enviar</button>
+    </div>
+    
+    <script>
+        function obterIdDoForumDaUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("forumId");
+}
+
+
+        
+         // Obtém o ID do fórum da URL (você precisa implementar a lógica para obter o ID)
+    const forumId = obterIdDoForumDaUrl(); // Implemente esta função
+
+// Obtém as mensagens do fórum a partir do Local Storage
+const mensagensForum = JSON.parse(localStorage.getItem(`mensagensForum${forumId}`)) || [];
+
+// Função para exibir as mensagens do fórum
+function exibirMensagens() {
+    const chatContainer = document.querySelector(".chat-container");
+    chatContainer.innerHTML = ""; // Limpa o conteúdo atual
+
+    mensagensForum.forEach(mensagem => {
+                const mensagemDiv = document.createElement("div");
+                mensagemDiv.classList.add("mensagem");
+                mensagemDiv.innerHTML = `
+                    <p><strong>${mensagem.usuario}</strong>: ${mensagem.texto}</p>
+                    <span>${mensagem.data}</span>
+                `;
+                chatContainer.appendChild(mensagemDiv);
+            });
+        }
+
+// Função para enviar uma nova mensagem
+function enviarMensagem() {
+    const novaMensagemInput = document.getElementById("novaMensagem");
+    const novaMensagem = novaMensagemInput.value;
+
+    if (novaMensagem) {
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")); // Obter informações do usuário logado
+
+        const mensagem = {
+            usuario: usuarioLogado.nome, // Utilizar o nome do usuário logado
+            texto: novaMensagem,
+            data: new Date().toLocaleString()
+        };
+        mensagensForum.push(mensagem);
+        localStorage.setItem(`mensagensForum${forumId}`, JSON.stringify(mensagensForum));
+        exibirMensagens();
+        novaMensagemInput.value = "";
+    }
+}
+    
+
+// Chama a função para exibir as mensagens ao carregar a página
+exibirMensagens();
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+function verificarUsuarioLogado() {
+    if (usuarioLogado) {
+        window.location.href = "perfil_usuario.html";
+    } else {
+        window.location.href = "login.html";
+    }
+}
+
+
+
+
+
+// Atualiza o nome do usuário na barra de navegação
+if (usuarioLogado) {
+    const nomeUsuarioDisplay = document.getElementById("nomeUsuarioDisplay");
+    nomeUsuarioDisplay.textContent = `Olá, ${usuarioLogado.nome}!`;
+}
+
+
+
+</script>
+</body>
+</html>
+

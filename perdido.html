@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perdidos</title>
+    <link rel="icon" type="image/png" href="mdi_cat.png">
+    <link rel="stylesheet" href="perdido.css">
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a class="logo" href="#"><img src="Adote Aqui!.png" alt="Logo"></a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Adotar</a></li>
+            <li><a href="cadastro_gato.html">Colocar para Adoção</a></li>
+            <li><a href="perdido.html">Perdidos</a></li>
+            <li><a href="add_perdido.html">Cadastrar Animal Perdido</a></li>
+            <li class="login-icon">
+                <a href="javascript:void(0);" onclick="verificarUsuarioLogado();">
+                    <img class="perfil" src="user-solid.svg" alt="perfil">
+                    <span id="nomeUsuarioDisplay"></span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="posts" id="postsContainer">
+        <!-- Os posts de gatos perdidos serão exibidos aqui -->
+    </div>
+    <div class="perdido-card" data-id="${gatinho.id}">
+        <!-- ... (conteúdo do card) ... -->
+    </div>
+
+    <script>
+        // Função para exibir os posts de gatos perdidos
+        function exibirGatosPerdidos() {
+    const postsContainer = document.getElementById("postsContainer");
+    const gatinhosPerdidos = JSON.parse(localStorage.getItem("gatinhosPerdidos")) || [];
+
+    // Limpa o conteúdo atual
+    postsContainer.innerHTML = "";
+
+    // Itera sobre os gatinhos perdidos e cria os posts
+    gatinhosPerdidos.forEach(gatinho => {
+    const post = document.createElement("div");
+    post.classList.add("post");
+
+    post.innerHTML = `
+        <a>${gatinho.nome}</a>
+        <img class="cat" src="data:image/png;base64,${gatinho.foto}" alt="Foto do Gatinho">
+        <h5 class="situacao perdido">Perdido</h5>
+        <input class="chat" type="text" name="chat" placeholder="Informações">
+        <button class="find" style="background-color: red;">Encontrei</button>
+    `;
+
+    // Adiciona evento de clique ao botão "Encontrei"
+    const findButton = post.querySelector(".find");
+    findButton.addEventListener("click", () => {
+        // Redireciona para a página chat_pessoal.html
+        window.location.href = "chat_pessoal.html";
+    });
+
+    postsContainer.appendChild(post);
+});
+}
+
+    
+        // Chama a função para exibir os posts de gatos perdidos
+        exibirGatosPerdidos();
+
+
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+        function verificarUsuarioLogado() {
+            if (usuarioLogado) {
+                window.location.href = "perfil_usuario.html";
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+
+
+        
+    
+
+        // Atualiza o nome do usuário na barra de navegação
+        if (usuarioLogado) {
+            const nomeUsuarioDisplay = document.getElementById("nomeUsuarioDisplay");
+            nomeUsuarioDisplay.textContent = `Olá, ${usuarioLogado.nome}!`;
+        }
+    </script>
+
+    
+</body>
+</html>

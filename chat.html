@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat de Adoção</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a class="logo" href="#"><img src="Adote Aqui!.png" alt="Logo"></a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Adotar</a></li>
+            <li><a href="#">Colocar para Adoção</a></li>
+            <li><a href="#">Contato</a></li>
+            <li class="chat-button">
+                <a href="#" class="chat-button">Chat</a>
+                <ul class="chat-options">
+                    <li><a href="#" class="chat-option">Chat para Adoção</a></li>
+                    <li><a href="#" class="chat-option">Chat para Perdidos</a></li>
+                </ul>
+            </li>
+            <li class="login-icon">
+                <a href="#"><img class="perfil" src="iconamoon_profile-fill.png" alt="perfil"></a>
+            </li>
+            <li class="search-bar">
+                <input class="search-barra" type="text" placeholder="Pesquisar">
+                <a class="icon-pesquisar-a" href=""><img class="icon-pesquisar" src="lupa.jpeg" alt=""></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="chat-container" id="chat-container">
+        <div class="chat-content">
+            <div class="chat-header">
+                <h2>Chat de Adoção</h2>
+                <p>Converse com a pessoa responsável pelo pet que você deseja adotar.</p>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Mensagens de chat serão adicionadas dinamicamente aqui -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Digite sua mensagem">
+                <button id="send-button">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatButton = document.querySelector(".chat-button");
+        const chatOptions = document.querySelector(".chat-options");
+        const chatContainer = document.getElementById("chat-container");
+
+        chatButton.addEventListener("mouseover", function() {
+            chatOptions.style.display = "block";
+        });
+
+        chatOptions.addEventListener("mouseleave", function() {
+            chatOptions.style.display = "none";
+        });
+
+        chatOptions.addEventListener("click", function(event) {
+            event.preventDefault();
+            chatContainer.style.display = "block";
+        });
+
+        const sendButton = document.getElementById("send-button");
+        const messageInput = document.getElementById("message-input");
+        const chatMessages = document.getElementById("chat-messages");
+
+        sendButton.addEventListener("click", function () {
+            const messageText = messageInput.value.trim();
+
+            if (messageText !== "") {
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message");
+                messageElement.innerHTML = `<span class="message-sender">Você:</span> ${messageText}`;
+                chatMessages.appendChild(messageElement);
+
+                messageInput.value = "";
+                messageInput.focus();
+
+                // Rolar para a última mensagem adicionada
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

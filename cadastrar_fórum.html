@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro do Gatinho</title>
+    <link rel="stylesheet" type="text/css" href="cf_styles.css">
+    <link rel="icon" type="image/png" href="mdi_cat.png">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a class="logo" href="#"><img class="logo" src="Adote Aqui!.png" alt="Logo"></a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Adotar</a></li>
+            <li><a href="cadastro_gato.html">Colocar Para Adoção</a></li>
+            <li><a href="foruns.html">Fórum</a></li>
+            
+            <li><a href="perdido.html">Perdidos</a></li>
+            <li><a href="add_perdido.html">Cadastrar Animal Perdido</a></li>
+            
+            
+            
+            <li class="login-icon">
+                <a href="javascript:void(0);" onclick="verificarUsuarioLogado();">
+                    <img class="perfil" src="user-solid.svg" alt="perfil">
+                    <span id="nomeUsuarioDisplay"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="form-forum">
+        <form onsubmit="concluirCadastroForum(event)">
+
+            
+            <div>
+                <label for="nome"><strong>Nome do Fórum:</strong></label>
+                <br>
+                <input class="imput-form" type="text" name="nome" id="nome" placeholder="Nome" required>
+            </div>
+           
+            <div>
+                <label for="assunto"><strong>Assunto</strong></label>
+                <br>
+                <input class="imput-form" type="text" name="assunto" id="assunto" placeholder="Assunto do Fórum" required>
+            </div>
+            
+            
+            
+
+            <div class="campo">
+                <br>
+                <label><strong>Descrição</strong></label>
+                <textarea class="imput-form" rows="4" style="width: 26em;" id="experiencia" nome="experiencia"></textarea>
+            </div><br>
+
+            <label for="img-forum"> <strong>Selecione uma foto:</strong></label>
+            <div class="envia-foto">
+                
+                <input type="file" id="img-forum" name="img-forum" accept="image/*">
+            </div><br><br>
+            
+
+            <button class="imput-form" class="botao" type="submit" onclick="concluirCadastroForum(event)" ><strong>Cadastrar</strong></button>
+    </form>
+    <script>
+
+function concluirCadastroForum(event) {
+            event.preventDefault();
+            
+
+            // Obtém os valores do formulário
+            
+            const nome = document.getElementById("nome").value;
+            const assunto = document.getElementById("assunto").value;
+            const descricao = document.getElementById("experiencia").value;
+    
+            // Obtém a imagem selecionada pelo usuário
+            const fotoInput = document.getElementById("img-forum");
+            const foto = fotoInput.files[0]; // A primeira imagem selecionada
+    
+            // Verifica se uma imagem foi selecionada
+            if (!foto) {
+                alert("Selecione uma foto para o fórum.");
+                return;
+            }
+
+            // Converte a imagem em uma string base64
+            const reader = new FileReader();
+            reader.onload = function () {
+                const fotoBase64 = reader.result.split(",")[1];
+                
+    
+                // Cria um objeto com as informações do gatinho
+                const novoforum = {
+                    id: Date.now(),
+                    nome,
+                    assunto,
+                    descricao,
+                    foto: fotoBase64, // URL temporária da imagem
+                    usuario: usuarioLogado.nome,
+                    
+                };
+    
+                // Obtém a lista de gatinhos do Local Storage ou cria uma nova lista vazia
+                const forunsCadastrados = JSON.parse(localStorage.getItem("forunsCadastrados")) || [];
+    
+                // Adiciona o novo gatinho à lista
+                forunsCadastrados.push(novoforum);
+    
+                // Atualiza a lista de gatinhos no Local Storage
+                localStorage.setItem("forunsCadastrados", JSON.stringify(forunsCadastrados));
+    
+                // Redireciona para a página principal
+                window.location.href = "foruns.html";
+            };
+
+            reader.readAsDataURL(foto);
+        
+}
+
+
+
+
+
+
+
+
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+function verificarUsuarioLogado() {
+    if (usuarioLogado) {
+        window.location.href = "perfil_usuario.html";
+    } else {
+        window.location.href = "login.html";
+    }
+}
+
+
+
+
+
+// Atualiza o nome do usuário na barra de navegação
+if (usuarioLogado) {
+    const nomeUsuarioDisplay = document.getElementById("nomeUsuarioDisplay");
+    nomeUsuarioDisplay.textContent = `Olá, ${usuarioLogado.nome}!`;
+}
+
+function deslogar() {
+    localStorage.removeItem("usuarioLogado");
+    alert("Você foi deslogado com sucesso.");
+    location.reload(); // Recarrega a página para atualizar o menu
+}
+
+    </script>

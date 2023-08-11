@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Pessoal</title>
+    <link rel="stylesheet" type="text/css" href="chat_pessoal.css">
+    <link rel="icon" type="image/png" href="mdi_cat.png">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a class="logo" href="#"><img class="logo" src="Adote Aqui!.png" alt="Logo"></a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Adotar</a></li>
+            <li><a href="foruns.html">Fórum</a></li>
+            <li><a href="cadastro_gato.html">Colocar para Adoção</a></li>
+            <li><a href="perdido.html">Perdidos</a></li>
+            <li><a href="add_perdido.html">Cadastrar Animal Perdido</a></li>
+           
+            
+            <li class="login-icon">
+                <a href="javascript:void(0);" onclick="verificarUsuarioLogado();">
+                    <img class="perfil" src="user-solid.svg" alt="perfil">
+                    <span id="nomeUsuarioDisplay"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+            <!-- Mensagens do chat serão exibidas aqui -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+            <button onclick="enviarMensagem()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+        const chatMessages = document.getElementById("chatMessages");
+        const messageInput = document.getElementById("messageInput");
+
+        // Função para exibir as mensagens do chat
+        function exibirMensagens() {
+            chatMessages.innerHTML = ""; // Limpa o conteúdo atual
+
+            const mensagensChat = JSON.parse(localStorage.getItem("mensagensChat")) || [];
+            mensagensChat.forEach(mensagem => {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("message");
+                messageDiv.innerHTML = `
+                    <div class="message-info">
+                        <p class="message-user">${mensagem.usuario}:</p>
+                        <span class="message-date">${mensagem.data}</span>
+                    </div>
+                    <p class="message-text">${mensagem.texto}</p>
+                `;
+                chatMessages.appendChild(messageDiv);
+            });
+        }
+
+        // Função para enviar uma nova mensagem
+        function enviarMensagem() {
+            const novaMensagem = messageInput.value.trim();
+
+            if (novaMensagem) {
+                const mensagem = {
+                    texto: novaMensagem,
+                    data: new Date().toLocaleString(),
+                    usuario: usuarioLogado.nome
+                };
+
+                const mensagensChat = JSON.parse(localStorage.getItem("mensagensChat")) || [];
+                mensagensChat.push(mensagem);
+                localStorage.setItem("mensagensChat", JSON.stringify(mensagensChat));
+
+                exibirMensagens(); // Atualiza a exibição das mensagens
+                messageInput.value = ""; // Limpa o campo de input
+            }
+        }
+
+        exibirMensagens(); // Chama a função para exibir as mensagens ao carregar a página
+
+        
+
+        function verificarUsuarioLogado() {
+            if (usuarioLogado) {
+                window.location.href = "perfil_usuario.html";
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+
+
+        
+    
+
+        // Atualiza o nome do usuário na barra de navegação
+        if (usuarioLogado) {
+            const nomeUsuarioDisplay = document.getElementById("nomeUsuarioDisplay");
+            nomeUsuarioDisplay.textContent = `Olá, ${usuarioLogado.nome}!`;
+        }
+        
+        function deslogar() {
+            localStorage.removeItem("usuarioLogado");
+            alert("Você foi deslogado com sucesso.");
+            location.reload(); // Recarrega a página para atualizar o menu
+        }
+    </script>
+</body>
+</html>
